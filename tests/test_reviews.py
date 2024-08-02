@@ -1,5 +1,3 @@
-""" Implement the Review Management Endpoints """
-
 import requests
 import uuid
 
@@ -18,6 +16,7 @@ def create_user():
         "email": unique_email,
         "first_name": "Test",
         "last_name": "User",
+        "password": "SecurePass123!"  # Adding a password field
     }
     response = requests.post(f"{API_URL}/users", json=new_user)
     assert (
@@ -54,6 +53,7 @@ def create_place():
         "longitude": -118.243683,
         "host_id": user_id,
         "city_id": city_code,
+        "country_name": "Uruguay",  # Adding country_name field
         "price_per_night": 100,
         "number_of_rooms": 2,
         "number_of_bathrooms": 1,

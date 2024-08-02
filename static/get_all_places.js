@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const placesList = document.getElementById('places-list');
-    const countryFilter = document.getElementById('country-filter');
 
     // Store places globally so they can be accessed by filter_by_country.js
     window.allPlaces = [];
@@ -18,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!token) {
             console.error('User is not logged in');
+            window.location.href = '/login';
             return;
         }
 
@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('Error fetching places:', error);
+            alert('User not logged in. Please go to loggin page.');
         }
     }
 
@@ -59,17 +60,20 @@ document.addEventListener('DOMContentLoaded', function () {
             placeTitle.textContent = place.name;
 
             const placePrice = document.createElement('p');
-            placePrice.textContent = `Price per night: ${place.price_by_night}`;
+            placePrice.innerHTML = `<strong>Price per night:</strong> ${place.price_by_night}`;
 
             const placeLocation = document.createElement('p');
-            placeLocation.textContent = `Location: ${place.city_id}`;
+            placeLocation.innerHTML = `<strong>Location:</strong> ${place.city_id}`;
 
             const detailsButton = document.createElement('button');
             detailsButton.textContent = 'View Details';
             detailsButton.classList.add('details-button');
+            detailsButton.addEventListener('click', function() {
+                window.location.href = `/place?id=${place.id}`;
+            });
 
-            placeCard.appendChild(placeImage);
             placeCard.appendChild(placeTitle);
+            placeCard.appendChild(placeImage);
             placeCard.appendChild(placePrice);
             placeCard.appendChild(placeLocation);
             placeCard.appendChild(detailsButton);

@@ -12,7 +12,7 @@ from solutions.solution.src.persistence.dbinit import db
 def create_app():
     #load_dotenv()
 
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static')
     bcrypt = Bcrypt(app)
     app.config['JWT_SECRET_KEY'] = 'My_secret_key'
     jwt = JWTManager(app)

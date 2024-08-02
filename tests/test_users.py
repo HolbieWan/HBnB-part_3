@@ -1,11 +1,8 @@
-""" Implement the User Management Endpoints """
-
 import requests
 import uuid
 from tests import test_functions
 
 API_URL = "http://localhost:5000"
-
 
 def create_unique_user():
     """
@@ -17,13 +14,13 @@ def create_unique_user():
         "email": unique_email,
         "first_name": "Test",
         "last_name": "User",
+        "password": "SecurePass123!"  # Adding a password field
     }
     response = requests.post(f"{API_URL}/users", json=new_user)
     assert (
         response.status_code == 201
     ), f"Expected status code 201 but got {response.status_code}. Response: {response.text}"
     return response.json()["id"]
-
 
 def test_get_users():
     """
@@ -39,7 +36,6 @@ def test_get_users():
         response.json(), list
     ), f"Expected response to be a list but got {type(response.json())}"
 
-
 def test_post_user():
     """
     Test to create a new user
@@ -51,6 +47,7 @@ def test_post_user():
         "email": unique_email,
         "first_name": "John",
         "last_name": "Doe",
+        "password": "SecurePass123!"  # Adding a password field
     }
     response = requests.post(f"{API_URL}/users", json=new_user)
     assert (
@@ -70,7 +67,6 @@ def test_post_user():
     assert "created_at" in user_data, "Created_at not in response"
     assert "updated_at" in user_data, "Updated_at not in response"
     return user_data["id"]  # Return the ID of the created user for further tests
-
 
 def test_get_user():
     """
@@ -95,7 +91,6 @@ def test_get_user():
     assert "created_at" in user_data, "Created_at not in response"
     assert "updated_at" in user_data, "Updated_at not in response"
 
-
 def test_put_user():
     """
     Test to update an existing user
@@ -110,6 +105,7 @@ def test_put_user():
         "email": f"updated.user.{uuid.uuid4()}@example.com",
         "first_name": "John",
         "last_name": "Smith",
+        "password": "SecurePass123!"  # Adding a password field
     }
     response = requests.put(f"{API_URL}/users/{user_id}", json=updated_user)
     assert (
@@ -134,6 +130,7 @@ def test_put_user():
         "email": updated_user["email"],  # Use the same email as the updated user
         "first_name": "Jane",
         "last_name": "Doe",
+        "password": "SecurePass123!"  # Adding a password field
     }
     response = requests.put(f"{API_URL}/users/{other_user_id}", json=conflict_user)
     assert (
@@ -142,7 +139,6 @@ def test_put_user():
     assert (
         "Email already exists" in response.text
     ), f"Expected error message 'Email already exists' but got {response.text}"
-
 
 def test_delete_user():
     """
@@ -157,7 +153,6 @@ def test_delete_user():
     assert (
         response.status_code == 204
     ), f"Expected status code 204 but got {response.status_code}. Response: {response.text}"
-
 
 if __name__ == "__main__":
     # Run the tests

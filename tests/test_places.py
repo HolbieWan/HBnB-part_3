@@ -1,12 +1,9 @@
-""" Implement the Places Management Endpoints """
-
 import requests
 import uuid
 
 from tests import test_functions
 
 API_URL = "http://localhost:5000"
-
 
 def create_unique_user():
     """
@@ -18,13 +15,13 @@ def create_unique_user():
         "email": unique_email,
         "first_name": "Test",
         "last_name": "User",
+        "password": "SecurePass123!"  # Adding a password field
     }
     response = requests.post(f"{API_URL}/users", json=new_user)
     assert (
         response.status_code == 201
     ), f"Expected status code 201 but got {response.status_code}. Response: {response.text}"
     return response.json()["id"]
-
 
 def create_city(name_suffix: str = ""):
     """
@@ -37,8 +34,6 @@ def create_city(name_suffix: str = ""):
         response.status_code == 201
     ), f"Expected status code 201 but got {response.status_code}. Response: {response.text}"
     return response.json()["id"]
-
-
 
 def test_get_places():
     """
@@ -53,7 +48,6 @@ def test_get_places():
     assert isinstance(
         response.json(), list
     ), f"Expected response to be a list but got {type(response.json())}"
-
 
 def test_post_place():
     """
@@ -71,6 +65,7 @@ def test_post_place():
         "longitude": -118.243683,
         "host_id": user_id,
         "city_id": city_id,
+        "country_name": "Uruguay",  # Adding country_name field
         "price_by_night": 100,
         "number_rooms": 2,
         "number_bathrooms": 1,
@@ -90,7 +85,6 @@ def test_post_place():
     assert "updated_at" in place_data, "Updated_at not in response"
     return place_data["id"]  # Return the ID of the created place for further tests
 
-
 def test_get_place():
     """
     Test to retrieve a specific place by ID
@@ -107,6 +101,7 @@ def test_get_place():
         "longitude": -119.417931,
         "host_id": user_id,
         "city_id": city_id,
+        "country_name": "Uruguay",  # Adding country_name field
         "price_by_night": 200,
         "number_rooms": 3,
         "number_bathrooms": 2,
@@ -123,7 +118,6 @@ def test_get_place():
     assert (
         response.status_code == 200
     ), f"Expected status code 200 but got {response.status_code}. Response: {response.text}"
-    
     place_data = response.json()
 
     # Print out the response JSON for debugging
@@ -145,7 +139,6 @@ def test_get_place():
     assert "created_at" in place_data, "Created_at not in response"
     assert "updated_at" in place_data, "Updated_at not in response"
 
-
 def test_put_place():
     """
     Test to update an existing place
@@ -162,6 +155,7 @@ def test_put_place():
         "longitude": -74.005974,
         "host_id": user_id,
         "city_id": city_id,
+        "country_name": "Uruguay",  # Adding country_name field
         "price_by_night": 150,
         "number_rooms": 4,
         "number_bathrooms": 3,
@@ -182,6 +176,7 @@ def test_put_place():
         "longitude": -77.03637,
         "host_id": user_id,
         "city_id": city_id,
+        "country_name": "Uruguay",  # Adding country_name field
         "price_by_night": 180,
         "number_rooms": 3,
         "number_bathrooms": 2,
@@ -200,7 +195,6 @@ def test_put_place():
     assert "created_at" in place_data, "Created_at not in response"
     assert "updated_at" in place_data, "Updated_at not in response"
 
-
 def test_delete_place():
     """
     Test to delete an existing place
@@ -217,6 +211,7 @@ def test_delete_place():
         "longitude": -122.419418,
         "host_id": user_id,
         "city_id": city_id,
+        "country_name": "Uruguay",  # Adding country_name field
         "price_by_night": 120,
         "number_rooms": 2,
         "number_bathrooms": 1,
@@ -233,3 +228,15 @@ def test_delete_place():
     assert (
         response.status_code == 204
     ), f"Expected status code 204 but got {response.status_code}. Response: {response.text}"
+
+if __name__ == "__main__":
+    # Run the tests
+    test_functions(
+        [
+            test_get_places,
+            test_post_place,
+            test_get_place,
+            test_put_place,
+            test_delete_place,
+        ]
+    )

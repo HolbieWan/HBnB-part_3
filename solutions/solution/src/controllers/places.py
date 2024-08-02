@@ -32,7 +32,6 @@ def get_places():
     
 
 @places_bp.route('/<place_id>', methods=['GET'])
-@jwt_required()
 def get_place_by_id(place_id: str):
     """Returns a place by ID"""
     place: Place | None = Place.get(place_id)

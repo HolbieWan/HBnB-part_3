@@ -26,12 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!token) {
-            console.error('User must be logged in to view place details');
-            window.location.href = '/login';
-            return;
-        }
-
         try {
             const response = await fetch(`/places/${placeId}`, {
                 method: 'GET',

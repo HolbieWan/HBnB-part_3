@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const placeDetailsSection = document.getElementById('place-details');
     const reviewListSection = document.getElementById('review-list');
+    const addReviewSection = document.getElementById('add-review');
 
     // Function to get a cookie by name
     function getCookie(name) {
@@ -20,12 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = getCookie('jwt_token');
         const placeId = getQueryParam('id');
 
-        if (!token) {
-            console.error('User is not logged in');
-            window.location.href = '/login';
-            return;
-        }
-
         if (!placeId) {
             console.error('Place ID is missing in the URL');
             return;
@@ -34,9 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch(`/places/${placeId}`, {
                 method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {}
             });
 
             console.log('Place details response status:', response.status);  // Debug log
@@ -127,12 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = getCookie('jwt_token');
         const placeId = getQueryParam('id');
 
-        if (!token) {
-            console.error('User is not logged in');
-            window.location.href = '/login';
-            return;
-        }
-
         if (!placeId) {
             console.error('Place ID is missing in the URL');
             return;
@@ -141,9 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch(`/places/${placeId}/reviews`, {
                 method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {}
             });
 
             console.log('Reviews response status:', response.status);  // Debug log
@@ -162,7 +147,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Check if the user is authenticated and show the review form if true
+    function checkAuthentication() {
+        const token = getCookie('jwt_token');
+        if (token) {
+            addReviewSection.style.display = 'block';
+        } else {
+            addReviewSection.style.display = 'none';
+        }
+    }
+
     // Fetch place details and reviews if the user is logged in
     fetchPlaceDetails();
     fetchReviews();
+    checkAuthentication();
 });

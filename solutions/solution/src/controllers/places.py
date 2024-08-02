@@ -26,7 +26,6 @@ def create_place():
 
 
 @places_bp.route('/', methods=['GET'])
-@jwt_required()
 def get_places():
     """Returns all places"""
     places: list[Place] = Place.get_all()
@@ -34,7 +33,6 @@ def get_places():
     
 
 @places_bp.route('/<place_id>', methods=['GET'])
-@jwt_required()
 def get_place_by_id(place_id: str):
     """Returns a place by ID"""
     place: Place | None = Place.get(place_id)

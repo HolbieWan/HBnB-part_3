@@ -15,5 +15,5 @@ def login():
     user = next((u for u in repo.get_all(User) if u.email == email), None)
     if user and user.check_password(password):
         access_token = create_access_token(identity=user.id)
-        return jsonify(access_token=access_token), 200
+        return jsonify(access_token=access_token, user_id=user.id), 200
     return jsonify({"msg": "Bad email or password"}), 401

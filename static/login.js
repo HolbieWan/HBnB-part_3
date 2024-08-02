@@ -24,9 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const data = await response.json();
             const token = data.access_token;
+            const userId = data.user_id;  // Make sure this is being returned by the server
 
-            // Store the token in a cookie
+            // Store the token and user ID in cookies
             document.cookie = `jwt_token=${token}; path=/; secure; SameSite=Strict`;
+            document.cookie = `user_id=${userId}; path=/; secure; SameSite=Strict`;  // Set user_id in cookie
 
             // Redirect to the home page
             window.location.href = '/';

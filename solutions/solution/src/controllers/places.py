@@ -12,7 +12,6 @@ places_bp = Blueprint('places', __name__)
 
 
 @places_bp.route('/', methods=['POST'])
-@jwt_required()
 def create_place():
     """Creates a new place"""
     data = request.get_json()
@@ -33,6 +32,7 @@ def get_places():
     
 
 @places_bp.route('/<place_id>', methods=['GET'])
+@jwt_required()
 def get_place_by_id(place_id: str):
     """Returns a place by ID"""
     place: Place | None = Place.get(place_id)

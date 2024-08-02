@@ -1,5 +1,6 @@
 # solutions/solution/src/controllers/auth.py
 
+from flask_jwt_extended import jwt_required
 from flask import Blueprint, request, jsonify, abort
 from flask_jwt_extended import create_access_token
 from solutions.solution.src.models.user import User
@@ -17,3 +18,12 @@ def login():
         access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token, user_id=user.id), 200
     return jsonify({"msg": "Bad email or password"}), 401
+
+
+@auth_bp.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    response = jsonify({"msg": "Logout successful"})
+    response.set_cookie('jwt_token', '', expires=0)
+    response.set_cookie('user_id', '', expires=0)
+    return response

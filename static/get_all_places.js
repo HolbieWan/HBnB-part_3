@@ -13,20 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to fetch places
     async function fetchPlaces() {
-        const token = getCookie('jwt_token');
-
-        if (!token) {
-            console.error('User is not logged in');
-            window.location.href = '/login';
-            return;
-        }
 
         try {
             const response = await fetch('/places', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                method: 'GET'
             });
 
             if (!response.ok) {

@@ -1,5 +1,5 @@
 """
-Places controller module
+Front_end controller module
 """
 
 from flask import abort, request, Blueprint, render_template, redirect, url_for

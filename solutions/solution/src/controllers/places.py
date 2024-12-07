@@ -1,7 +1,7 @@
 """
 Places controller module
 """
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required # type: ignore
 from flask import abort, request, Blueprint, render_template
 from solutions.solution.src.models.place import Place
 from solutions.solution.src.models.review import Review
